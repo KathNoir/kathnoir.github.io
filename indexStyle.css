@@ -1,0 +1,37 @@
+
+html, body {
+    height: 100%;
+    width: 100%;
+    scroll-behavior: smooth;
+  }
+
+.websiteContent {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+#container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+#horizontal {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  background-color: lightgoldenrodyellow;
+  border: red;
+  border-style: double;
+  border-width: 3px;
+}
+
+#vertical {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 100%;
+  border: red;
+  border-style: double;
+  border-width: 3px;
+}
