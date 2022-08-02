@@ -53,12 +53,12 @@
     <section class="question">
         <div class="questionContainer">
 
-          <div class="questionOne">
+          <div class="questionOne" id="questionOne">
           <h3>You come across a website that seems sketchy.</h3>
           <figure class="exampleContainer">
             <img src="https://miro.medium.com/max/1260/1*rqAZKGaXsQA1Awy_-h_ShQ.jpeg"/>
             <h3>What should you do?</h3>
-            <div class="answerContainer">
+            <div class="answerContainer" id="oneAnswers">
               <button class="incorrect">Click every link! It must be safe.</button>
               <button class="incorrect">It has the HTTPS, it must be safe.</button>
               <button class="correct">Avoid the links and close the webpage- nothing is safe.</button>
@@ -66,17 +66,69 @@
             </div>
           </div>
 
-          <div class="questionTwo hidden">
+          <div class="questionTwo hidden" id="questionTwo">
             <h3>You come across another website.</h3>
             <figure class="exampleContainer">
               <img src="https://miro.medium.com/max/1260/1*rqAZKGaXsQA1Awy_-h_ShQ.jpeg"/>
               <h3>What should you do?</h3>
-              <div class="answerContainer">
+              <div class="answerContainer" id="twoAnswers">
                 <button class="incorrect">Placeholder Text</button>
                 <button class="correct">Placeholder Text</button>
                 <button class="incorrect">Placeholder Text</button>
                 <button class="incorrect">Placeholder Text</button>
               </div>
+          </div>
+
+          <div class="questionThree hidden" id="questionThree">
+            <h3>Question Three</h3>
+            <figure class="exampleContainer">
+              <img src="https://miro.medium.com/max/1260/1*rqAZKGaXsQA1Awy_-h_ShQ.jpeg"/>
+              <h3>What should you do?</h3>
+              <div class="answerContainer" id="threeAnswers">
+                <button class="incorrect">Placeholder Text</button>
+                <button class="correct">Placeholder Text</button>
+                <button class="incorrect">Placeholder Text</button>
+                <button class="incorrect">Placeholder Text</button>
+               </div>
+          </div>
+
+            <div class="questionFour hidden" id="questionFour">
+              <h3>Question Four</h3>
+              <figure class="exampleContainer">
+                <img src="https://miro.medium.com/max/1260/1*rqAZKGaXsQA1Awy_-h_ShQ.jpeg"/>
+                <h3>What should you do?</h3>
+                <div class="answerContainer" id="fourAnswers">
+                  <button class="incorrect">Placeholder Text</button>
+                  <button class="correct">Placeholder Text</button>
+                  <button class="incorrect">Placeholder Text</button>
+                  <button class="incorrect">Placeholder Text</button>
+                </div>
+            </div>
+
+            <div class="questionFive hidden" id="questionFive">
+              <h3>Question Five</h3>
+              <figure class="exampleContainer">
+                <img src="https://miro.medium.com/max/1260/1*rqAZKGaXsQA1Awy_-h_ShQ.jpeg"/>
+                <h3>What should you do?</h3>
+                <div class="answerContainer" id="fiveAnswers">
+                  <button class="incorrect">Placeholder Text</button>
+                  <button class="correct">Placeholder Text</button>
+                  <button class="incorrect">Placeholder Text</button>
+                  <button class="incorrect">Placeholder Text</button>
+                </div>
+            </div>
+
+
+            <div class="results hidden" id="results">
+              <h1>You've completed the quiz, let's see what you got!</h1>
+              <figure class="exampleContainer">
+                <!-- <img src=""/> -->
+                <div class="resultContainer">
+                  <h2 id="correctResults">
+                    X/5
+                    questions correct!
+                  </h2>
+                </div>
             </div>
 
 
