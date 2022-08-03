@@ -12,7 +12,6 @@ img {
     display: none;
   }
 
-
 .questionContainer {
     display: flex;
     flex-direction: column;
@@ -32,4 +31,12 @@ img {
 .answerContainer {
     display: flex;
     flex-direction: column;
+}
+
+.explanationContainer {
+    justify-content: space-evenly;
+    background-color: rgb(255, 149, 149);
+    border-style: double;
+    border-color: black;
+    border-width: 5px;
 }

@@ -53,6 +53,7 @@
     <section class="question">
         <div class="questionContainer">
 
+          <!--Questions-->
           <div class="questionOne" id="questionOne">
           <h3>Question 1</h3>
           <figure class="exampleContainer">
@@ -74,9 +75,9 @@
               </h3>
               <div class="answerContainer" id="twoAnswers">
                 <button class="incorrect">Call the 1-800 Number</button>
-                <button class="correct">Create a new account</button>
+                <button class="incorrect">Create a new account</button>
                 <button class="incorrect">Place an order of the Canada Drugs </button>
-                <button class="incorrect">Close the link and never open it again</button>
+                <button class="correct">Close the link and never open it again</button>
               </div>
           </div>
 
@@ -85,8 +86,8 @@
             <figure class="exampleContainer">
               <h3>What is an example of a scam you learned about today?</h3>
               <div class="answerContainer" id="threeAnswers">
-                <button class="incorrect">Phishing Scam</button>
-                <button class="correct">Fishing Scam</button>
+                <button class="correct">Phishing Scam</button>
+                <button class="incorrect">Fishing Scam</button>
                 <button class="incorrect">Spyware Scam</button>
                 <button class="incorrect">White Horse Scam</button>
                </div>
@@ -121,24 +122,82 @@
               <h3>Question Six</h3>
               <figure class="exampleContainer">
                 <img src="Email.png"/>
-                <h3>If you receive a text like the one shown above, what should you do?</h3>
+                <h3>True or False:</h3>
+                <h3>Verifying your email can help protect you against cybersecurity scams.</h3>
                 <div class="answerContainer" id="sixAnswers">
                   <button class="correct">True</button>
                   <button class="incorrect">False</button>
                 </div>
             </div>
 
-
+            <!--Results-->
             <div class="results hidden" id="results">
               <h1>You've completed the quiz, let's see what you got!</h1>
               <figure class="exampleContainer">
-                <!-- <img src=""/> -->
+                <img id="placeholderImage" src=""/>
                 <div class="resultContainer">
                   <h2 id="correctResults">
                     X/5
                     questions correct!
                   </h2>
                 </div>
+            </div>
+
+            <!--Incorrect answer explanations-->
+            <div class="explanationContainer hidden" id="questionOneExplanation">
+              <span>
+                Question 1
+                <br>
+                Websites that look sketchy, with many download links and buttons, and have unknown origins should always be avoided.
+                Since you do not know the origins of the website, you don't know if the links will lead to malicious sites or downloads.
+              </span>
+            </div>
+            <br>
+            <div class="explanationContainer hidden" id="questionTwoExplanation">
+              <span>
+                Question 2
+                <br>
+                While websites like the one pictured can look like a legitimate website, sensitive information should never be inputted if the website looks outdated.
+                There is a chance that websites like the one pictured have outdated security measures, and your information can be stolen. 
+              </span>
+            </div>
+            <br>
+            <div class="explanationContainer hidden" id="questionThreeExplanation">
+              <span>
+                Question 3
+                <br>
+                Phishing scams are when a scammer uses fraudulent emails or links to steal your information. <br>
+                Fishing scams is a play on words, as the real type is "Phishing".<br>
+                Spyware scams do not exist. Spyware is instead a malicious type of program that steals information from your computer or device.<br>
+                White Horse scams do not exist.
+              </span>
+            </div>
+            <br>
+            <div class="explanationContainer hidden" id="questionFourExplanation">
+              <span>
+                Question 4
+                <br>
+                Banks will never email you about your information, and will never ask you to input information via email. It is best to visit your bank
+                in-person to answer any issues, or contact a representative over the phone.
+              </span>
+            </div>
+            <br>
+            <div class="explanationContainer hidden" id="questionFiveExplanation">
+              <span>
+                Question 5
+                <br>
+                Banks will never ask you to input information via text message. It is best to visit your bank
+                in-person to answer any issues, or contact a representative over the phone.
+              </span>
+            </div>
+            <br>
+            <div class="explanationContainer hidden" id="questionSixExplanation">
+              <span>
+                Question 6
+                <br>
+                Email verification is a great way to secure your account against hackers and scammers. Leaving your account
+                without verification can lead to decreased security and a higher chance of your information being stolen.
+              </span>
             </div>
 
 
