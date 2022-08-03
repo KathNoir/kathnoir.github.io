@@ -1,8 +1,8 @@
 `use strict`;
 console.log("Quiz script runnning");
 
-const questions = ["questionOne", "questionTwo", "questionThree", "questionFour", "questionFive"];
-const answerContainers = ["oneAnswers", "twoAnswers", "threeAnswers", "fourAnswers", "fiveAnswers"];
+const questions = ["questionOne", "questionTwo", "questionThree", "questionFour", "questionFive", "questionSix"];
+const answerContainers = ["oneAnswers", "twoAnswers", "threeAnswers", "fourAnswers", "fiveAnswers", "sixAnswers"];
 const numCorrect = document.getElementById("correctResults");
 
 let roundCounter = 0;
@@ -40,14 +40,14 @@ for (let i = 0; i < answerContainers.length; i++) {
 
 function hide() {
     for (let i = 0; i < questions.length; i++) {
-        if (i == roundCounter && roundCounter < 4) {
+        if (i == roundCounter && roundCounter < questions.length-1) {
             document.getElementById(questions[i]).classList.add("hidden");
             document.getElementById(questions[i+1]).classList.remove("hidden");
         }
-        else if (roundCounter == 4) {
+        else if (roundCounter == questions.length-1) {
             document.getElementById(questions[i]).classList.add("hidden");
             document.getElementById("results").classList.remove("hidden");
-            numCorrect.innerHTML = (correctAnswers + "/5 questions correct");
+            numCorrect.innerHTML = (correctAnswers + "/6 questions correct; " + ((correctAnswers/6)*100).toFixed(0) + "% correct.");
         }
     }
 }

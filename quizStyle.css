@@ -4,9 +4,14 @@ html, body {
     scroll-behavior: smooth;
 }
 
+img {
+    width: 600px;
+}
+
 .hidden {
     display: none;
   }
+
 
 .questionContainer {
     display: flex;
