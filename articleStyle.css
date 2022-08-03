@@ -6,4 +6,31 @@ html, body {
 #main {
     display: flex;
     flex-direction: row;
+    margin-left: 50px;
+    margin-top: 20px;
+}
+
+h1 {
+    font-size: 300%;
+    text-align: center;
+    color: #386FA4;
+}
+
+h3 {
+    font-size: 250%;
+}
+
+.description {
+    width: 750px;
+    font-size: 200%;
+    margin-bottom: 50px;
+}
+
+.image {
+    height: 1000px;
+    width: 800px;
+    object-fit: fill;
+    display: block;
+    margin-top: 50px;
+    margin-left: 175px;
 }
