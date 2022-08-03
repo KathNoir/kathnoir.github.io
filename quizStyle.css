@@ -4,6 +4,10 @@ html, body {
     scroll-behavior: smooth;
 }
 
+img {
+    width: 600px;
+}
+
 .hidden {
     display: none;
   }
@@ -27,4 +31,12 @@ html, body {
 .answerContainer {
     display: flex;
     flex-direction: column;
+}
+
+.explanationContainer {
+    justify-content: space-evenly;
+    background-color: rgb(255, 149, 149);
+    border-style: double;
+    border-color: black;
+    border-width: 5px;
 }
