@@ -1,6 +1,7 @@
 html, body {
     height: 100%;
     width: 100%;
+    background-image: url("https://www.americanoceans.org/wp-content/uploads/2021/06/shutterstock_1807037047-scaled.jpg");
 }
 
 #main {
@@ -8,12 +9,25 @@ html, body {
     flex-direction: row;
     margin-left: 50px;
     margin-top: 20px;
+    background-color: white;
+    line-height: 1.6;
+}
+
+section {
+    background-color: white;
 }
 
 h1 {
+    display: flex;
     font-size: 300%;
+    color: #91E5F6;
+    justify-content: center; 
     text-align: center;
-    color: #386FA4;
+    background-color: #386FA4;
+    height: 65px;
+    width: 400px;
+    border-radius: 10px;
+    margin-left: 40%;
 }
 
 h3 {

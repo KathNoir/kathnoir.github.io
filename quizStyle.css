@@ -2,6 +2,34 @@ html, body {
     height: 100%;
     width: 100%;
     scroll-behavior: smooth;
+    background-image: url("https://www.americanoceans.org/wp-content/uploads/2021/06/shutterstock_1807037047-scaled.jpg");
+
+}
+
+h1 {
+    display: flex;
+    font-size: 300%;
+    color: #91E5F6;
+    justify-content: center; 
+    text-align: center;
+    background-color: #386FA4;
+    height: 65px;
+    width: 400px;
+    border-radius: 10px;
+    margin-left: 40%;
+}
+
+h4 {
+    display: flex;
+    font-size: 300%;
+    color: #91E5F6;
+    justify-content: center; 
+    text-align: center;
+    background-color: #386FA4;
+    height: 65px;
+    width: 1100px;
+    border-radius: 10px;
+    margin-right: 0px;
 }
 
 img {
@@ -21,11 +49,14 @@ img {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
+    background-color: white;
 }
 
 .exampleContainer {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .answerContainer {
