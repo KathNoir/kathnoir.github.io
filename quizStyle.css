@@ -20,7 +20,8 @@ h1 {
     height: 65px;
     width: 400px;
     border-radius: 10px;
-    margin-left: 40%;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 h4 {
