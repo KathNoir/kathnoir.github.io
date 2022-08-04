@@ -2,6 +2,7 @@ html, body {
     height: 100%;
     width: 100%;
     margin-left: 0;
+    overflow-x: hidden;
     background-image: url("https://www.americanoceans.org/wp-content/uploads/2021/06/shutterstock_1807037047-scaled.jpg");
 }
 
