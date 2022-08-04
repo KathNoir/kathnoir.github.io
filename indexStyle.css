@@ -19,14 +19,14 @@ header {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  background-color: white;
+  
 }
 
 #horizontal {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  background-color: white;
+  background-color: #91E5F6;
   border: black;
   border-style: double;
   border-width: 3px;
@@ -45,6 +45,7 @@ header {
   padding-right: 50px;
   padding-top: 30px;
   line-height: 1.6;
+  background-color: #91E5F6;
 }
 
 #vertical2 {
@@ -58,6 +59,7 @@ header {
   padding-left: 50px;
   padding-right: 50px;
   line-height: 1.6;
+  background-color: #91E5F6;
 }
 
 h1 {
@@ -69,6 +71,15 @@ h1 {
   background-color: #386FA4;
   border-radius: 10px;
   width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h2 {
+  font-size: 250%;
+  text-align: center;
+  color: #ff3a3a;
+  border-radius: 10px;
   margin-left: auto;
   margin-right: auto;
 }
