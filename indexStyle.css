@@ -69,15 +69,15 @@ h1 {
 }
 
 h3 {
-  font-size: 250%;
+  font-size: 150%;
 }
 
 p {
-  width: 750px;
-  font-size: 200%;
-  margin-bottom: 50px;
+  width: 400px;
+  font-size: 100%;
+  text-align: center;
 }
 
 .portrait {
-  height: 400px
+  height: 100px
 }
