@@ -3,6 +3,7 @@ html, body {
     height: 100%;
     width: 100%;
     scroll-behavior: smooth;
+    margin-left: 0;
     background-image: url("https://www.americanoceans.org/wp-content/uploads/2021/06/shutterstock_1807037047-scaled.jpg");
   }
 
@@ -31,6 +32,7 @@ header {
   border-style: double;
   border-width: 3px;
   padding-left: 80px;
+  margin-bottom: 30px;
 }
 
 #vertical1 {
