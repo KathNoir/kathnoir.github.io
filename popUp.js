@@ -1,3 +1,5 @@
+ //Never used
+ 
  // Popup window code
  function newPopup(url) {
     popupWindow = window.open(
