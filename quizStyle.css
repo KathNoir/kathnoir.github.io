@@ -6,6 +6,10 @@ html, body {
 
 }
 
+header {
+    margin-bottom: 30px;
+}
+
 h1 {
     display: flex;
     font-size: 300%;
@@ -21,15 +25,18 @@ h1 {
 
 h4 {
     display: flex;
-    font-size: 300%;
+    font-size: 225%;
     color: #91E5F6;
     justify-content: center; 
     text-align: center;
     background-color: #386FA4;
     height: 65px;
-    width: 1100px;
+    width: 800px;
     border-radius: 10px;
-    margin-right: 0px;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 img {
@@ -43,8 +50,8 @@ img {
 .questionContainer {
     display: flex;
     flex-direction: column;
-    width: fit-content;
-    border: 1px solid black;
+    width: 800px;
+    border: 3px solid black;
     padding: 20px;
     text-align: center;
     margin-left: auto;
@@ -70,4 +77,10 @@ img {
     border-style: double;
     border-color: black;
     border-width: 5px;
+}
+
+.incorrect,
+.correct {
+    width: 400px;
+    height: 50px;
 }

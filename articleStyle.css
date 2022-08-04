@@ -13,6 +13,10 @@ html, body {
     line-height: 1.6;
 }
 
+header {
+    margin-bottom: 30px;
+}
+
 section {
     background-color: white;
 }
