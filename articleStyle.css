@@ -31,7 +31,8 @@ h1 {
     height: 65px;
     width: 400px;
     border-radius: 10px;
-    margin-left: 40%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 h3 {
@@ -46,9 +47,8 @@ h3 {
 /* adjust image sizes */
 .image {
     height: 20px;
-    width: 600px;
-    object-fit: fill;
+    width: 30px;
+    object-fit: contain;
     display: block;
     margin-top: 50px;
-    margin-left: 175px;
 }
