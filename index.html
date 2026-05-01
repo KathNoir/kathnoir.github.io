@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Documenting ALFAH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --sage:  #d8e2dc;
+      --peach: #ffe5d9;
+      --blush: #ffcad4;
+      --rose:  #f4acb7;
+      --mauve: #9d8189;
+      --dark:  #3a2d31;
+      --text:  #4a3840;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--peach);
+      color: var(--text);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      overflow-x: hidden;
+    }
+
+    /* noise texture */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 999; opacity: 0.4;
+    }
+
+    /* ═══════════════════════════════
+       NAVBAR
+    ═══════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 3rem;
+      height: 64px;
+      background: rgba(255,229,217,0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(157,129,137,0.15);
+    }
+
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem; font-weight: 400; color: var(--dark);
+      letter-spacing: 0.04em; cursor: pointer; flex-shrink: 0;
+    }
+    .nav-brand em { font-style: italic; color: var(--mauve); }
+
+    .nav-links { display: flex; gap: 0; list-style: none; }
+
+    .nav-links li button {
+      background: none; border: none; cursor: pointer;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.82rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--mauve); padding: 0 1.4rem; height: 64px;
+      position: relative; transition: color 0.25s;
+    }
+    .nav-links li button::after {
+      content: ''; position: absolute; bottom: 0; left: 50%; right: 50%;
+      height: 2px; background: var(--mauve);
+      transition: left 0.25s, right 0.25s;
+    }
+    .nav-links li button:hover,
+    .nav-links li button.active { color: var(--dark); }
+    .nav-links li button.active::after,
+    .nav-links li button:hover::after { left: 1.4rem; right: 1.4rem; }
+
+    /* hamburger — hidden always */
+    .nav-hamburger { display: none !important; }
+
+    /* ═══════════════════════════════
+       PAGES
+    ═══════════════════════════════ */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ═══════════════════════════════
+       HERO
+    ═══════════════════════════════ */
+    .hero {
+      min-height: 100vh; padding-top: 64px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      background: linear-gradient(160deg, var(--sage) 0%, var(--peach) 50%, var(--blush) 100%);
+      position: relative; overflow: hidden;
+      padding-left: 2rem; padding-right: 2rem; padding-bottom: 4rem;
+    }
+    .hero::after {
+      content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+      height: 120px; background: var(--peach);
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+
+    .blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.5; pointer-events: none; }
+    .blob-1 { width: 400px; height: 400px; background: var(--rose); top: -100px; right: -80px; }
+    .blob-2 { width: 300px; height: 300px; background: var(--sage); bottom: 80px; left: -60px; }
+
+    .hero-eyebrow {
+      font-size: 0.85rem; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--mauve); margin-bottom: 1.5rem;
+      opacity: 0; animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      font-weight: 400; line-height: 1; color: var(--dark);
+      opacity: 0; animation: fadeUp 0.9s ease forwards 0.4s;
+    }
+    .hero h1 em { font-style: italic; color: var(--mauve); }
+    .hero-sub {
+      margin-top: 1.5rem; font-size: 1.25rem; font-weight: 300;
+      color: var(--mauve); letter-spacing: 0.05em;
+      opacity: 0; animation: fadeUp 0.9s ease forwards 0.6s;
+    }
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      color: var(--mauve); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+      opacity: 0; animation: fadeUp 1s ease forwards 1.1s; z-index: 2;
+    }
+    .scroll-line { width: 1px; height: 40px; background: var(--mauve); animation: scrollPulse 1.8s ease-in-out infinite; }
+
+    /* ═══════════════════════════════
+       INNER PAGE HEADER
+    ═══════════════════════════════ */
+    .page-header {
+      padding: 8rem 2rem 5rem; text-align: center;
+      background: linear-gradient(160deg, var(--sage) 0%, var(--peach) 100%);
+      position: relative;
+    }
+    .page-header .eyebrow {
+      font-size: 0.78rem; letter-spacing: 0.38em; text-transform: uppercase;
+      color: var(--mauve); margin-bottom: 1rem;
+    }
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-weight: 400; color: var(--dark); line-height: 1.1;
+    }
+    .page-header h1 em { font-style: italic; color: var(--mauve); }
+    .page-header p {
+      margin-top: 1rem; font-size: 1.15rem; font-weight: 300; color: var(--mauve);
+      max-width: 520px; margin-left: auto; margin-right: auto;
+    }
+
+    /* clickable home cards */
+    .card-link-wrap { cursor: pointer; }
+    .card-link-wrap:focus-visible { outline: 3px solid var(--mauve); outline-offset: 4px; }
+    .card-explore {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-size: 0.82rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--mauve); background: none; border: none; cursor: pointer;
+      font-family: 'Cormorant Garamond', serif;
+      padding: 0; transition: gap 0.3s ease, color 0.3s ease;
+    }
+    .card-explore::after { content: '→'; transition: transform 0.3s ease; }
+    .card-explore:hover,
+    .card-link-wrap:hover .card-explore { gap: 1rem; color: var(--dark); }
+    .card-link-wrap:hover .card-explore::after { transform: translateX(4px); }
+    .showcase { max-width: 1200px; margin: 0 auto; padding: 6rem 2rem 2rem; }
+
+    .card {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+      margin-bottom: 6rem;
+      opacity: 0; transform: translateY(50px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      border-radius: 24px; overflow: hidden;
+      box-shadow: 0 4px 6px rgba(157,129,137,0.08), 0 20px 60px rgba(157,129,137,0.12);
+    }
+    .card.visible { opacity: 1; transform: translateY(0); }
+    .card:nth-child(even) { direction: rtl; }
+    .card:nth-child(even) > * { direction: ltr; }
+
+    /* image pane */
+    .card-image { position: relative; overflow: hidden; min-height: 480px; }
+    .card-image img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .card-image img.img-missing { display: none; }
+    .card:hover .card-image img:not(.img-missing) { transform: scale(1.05); }
+
+    /* placeholder shown when image hasn't loaded */
+    .img-placeholder {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 0.75rem; color: var(--mauve);
+      background: linear-gradient(135deg, var(--sage) 0%, var(--blush) 100%);
+    }
+    .img-placeholder svg { opacity: 0.45; }
+    .img-placeholder .ph-label {
+      font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.65;
+      font-family: 'Cormorant Garamond', serif;
+    }
+    /* hide placeholder once image loads */
+    .img-placeholder.hidden { display: none; }
+
+    .img-overlay { position: absolute; inset: 0; opacity: 0.15; pointer-events: none; }
+    .card:nth-child(1) .img-overlay { background: linear-gradient(135deg, var(--rose), var(--mauve)); }
+    .card:nth-child(2) .img-overlay { background: linear-gradient(135deg, var(--sage), var(--blush)); }
+    .card:nth-child(3) .img-overlay { background: linear-gradient(135deg, var(--peach), var(--rose)); }
+    .card:nth-child(4) .img-overlay { background: linear-gradient(135deg, var(--mauve), var(--sage)); }
+    .card:nth-child(5) .img-overlay { background: linear-gradient(135deg, var(--blush), var(--peach)); }
+    .card:nth-child(6) .img-overlay { background: linear-gradient(135deg, var(--rose), var(--sage)); }
+    .card:nth-child(7) .img-overlay { background: linear-gradient(135deg, var(--sage), var(--rose)); }
+
+    .img-number {
+      position: absolute; bottom: 1.25rem; right: 1.5rem;
+      font-family: 'Playfair Display', serif; font-size: 5rem; font-weight: 700;
+      color: f4acb7; line-height: 1; pointer-events: none; opacity: 0.15;
+    }
+
+    /* text pane */
+    .card-text { padding: 3.5rem 3rem; display: flex; flex-direction: column; justify-content: center; }
+    .card:nth-child(1) .card-text { background: var(--sage); }
+    .card:nth-child(2) .card-text { background: var(--blush); }
+    .card:nth-child(3) .card-text { background: var(--peach); }
+    .card:nth-child(4) .card-text { background: var(--rose); }
+    .card:nth-child(5) .card-text { background: var(--sage); }
+    .card:nth-child(6) .card-text { background: var(--blush); }
+    .card:nth-child(7) .card-text { background: var(--peach); }
+
+    .card-tag { font-size: 0.72rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--mauve); margin-bottom: 1rem; }
+    .card-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 400; line-height: 1.2; color: var(--dark); margin-bottom: 1.25rem;
+    }
+    .card-text h2 em { font-style: italic; color: var(--mauve); }
+    .card-text p { font-size: 1.1rem; font-weight: 300; line-height: 1.9; color: var(--text); margin-bottom: 2rem; }
+    .card-divider { width: 48px; height: 1.5px; background: var(--mauve); margin-bottom: 1.5rem; border: none; opacity: 0.5; }
+
+    /* ═══════════════════════════════
+       ABOUT PAGE
+    ═══════════════════════════════ */
+    .about-body { max-width: 760px; margin: 0 auto; padding: 5rem 2rem 6rem; }
+    .about-body h2 { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 400; color: var(--dark); margin-bottom: 1rem; }
+    .about-body h2 em { font-style: italic; color: var(--mauve); }
+    .about-body p { font-size: 1.15rem; font-weight: 300; line-height: 2; color: var(--text); margin-bottom: 1.75rem; }
+    .about-divider { width: 60px; height: 1.5px; background: var(--mauve); border: none; opacity: 0.4; margin: 2.5rem 0; }
+
+    /* ═══════════════════════════════
+       FOOTER
+    ═══════════════════════════════ */
+    footer {
+      text-align: center; padding: 5rem 2rem;
+      background: linear-gradient(to bottom, var(--peach), var(--sage));
+      color: var(--mauve); font-size: 0.85rem; letter-spacing: 0.1em;
+    }
+    footer strong {
+      font-family: 'Playfair Display', serif; font-size: 1.6rem;
+      display: block; margin-bottom: 0.75rem; color: var(--dark); font-weight: 400;
+    }
+
+    /* ═══════════════════════════════
+       ANIMATIONS
+    ═══════════════════════════════ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 1; transform: scaleY(1); }
+      50%       { opacity: 0.4; transform: scaleY(0.6); }
+    }
+
+    /* ═══════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════ */
+    @media (max-width: 768px) {
+      nav {
+        padding: 0 1rem;
+        flex-wrap: wrap;
+        height: auto;
+        min-height: 64px;
+      }
+      .nav-brand { padding: 1rem 0.5rem 0.5rem; font-size: 1.1rem; }
+      .nav-links {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0 0 0.5rem;
+        gap: 0;
+      }
+      .nav-links li button {
+        height: 40px;
+        padding: 0 0.75rem;
+        font-size: 0.72rem;
+        letter-spacing: 0.15em;
+      }
+      .nav-links li button::after { bottom: 2px; }
+      .hero { padding-top: 110px; }
+      .page-header { padding-top: 120px; }
+      .card { grid-template-columns: 1fr; }
+      .card:nth-child(even) { direction: ltr; }
+      .card-image { min-height: 280px; }
+      .card-text { padding: 2.5rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════
+       NAVBAR
+  ══════════════════════════════════════ -->
+  <nav>
+    <div class="nav-brand" onclick="showPage('home')">Documenting <em>ALFAH</em></div>
+    <ul class="nav-links" id="navLinks">
+      <li><button onclick="showPage('home')"     class="active" data-page="home">Home</button></li>
+      <li><button onclick="showPage('negation')" data-page="negation">Multiple Negation</button></li>
+      <li><button onclick="showPage('habitual')" data-page="habitual">Habitual Be</button></li>
+      <li><button onclick="showPage('about')"    data-page="about">About the Project</button></li>
+      <li><button onclick="showPage('making')"   data-page="making">Making this Website</button></li>
+    </ul>
+    <button class="nav-hamburger" id="hamburger" aria-hidden="true"></button>
+  </nav>
+
+
+  <!-- ══════════════════════════════════════
+       PAGE: HOME
+  ══════════════════════════════════════ -->
+  <div class="page active" id="page-home">
+
+    <section class="hero">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <h1>Documenting <em>ALFAH</em></h1>
+      <p class="hero-sub">Merging <em>Computer Science</em> and <em>Linguistics</em> to help communities.</p>
+      <div class="hero-scroll">
+        <div class="scroll-line"></div>
+        <span>Scroll</span>
+      </div>
+    </section>
+
+    <main class="showcase">
+
+      <!--
+      ╔══════════════════════════════════════════════════════════════════╗
+      ║  HOW TO ADD YOUR OWN IMAGES                                     ║
+      ║                                                                  ║
+      ║  1. Create a folder called "images" next to this HTML file.     ║
+      ║  2. Put your images in it, named:                               ║
+      ║       image_1.png   image_2.png   image_3.png   etc.           ║
+      ║     (JPG, PNG, WebP all work — just match the extension below)  ║
+      ║  3. Save the file and reload — your images appear instantly.    ║
+      ║                                                                  ║
+      ║  To change a filename, edit the src="images/image_X.png" path  ║
+      ║  on the <img> tag inside each card below.                       ║
+      ║                                                                  ║
+      ║  To add a new card, copy any <article class="card"> … </article>║
+      ║  block and update the image number and text.                    ║
+      ╚══════════════════════════════════════════════════════════════════╝
+      -->
+
+      <article class="card card-link-wrap" onclick="showPage('negation')" tabindex="0" onkeydown="if(event.key==='Enter')showPage('negation')">
+        <div class="card-image">
+          <div class="img-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="ph-label">images/image_1.png</span>
+          </div>
+          <!-- ▼ CHANGE THIS PATH to your image file -->
+          <img src="images/image_1.png" alt="Image 1" onerror="handleImgError(this)" onload="handleImgLoad(this)"/>
+          <div class="img-overlay"></div>
+          <div class="img-number">01</div>
+        </div>
+        <div class="card-text">
+          <span class="card-tag">Feature · Syntax</span>
+          <h2>Multiple <em>Negation</em></h2>
+          <hr class="card-divider"/>
+          <p>Multiple negation — the use of more than one negative marker in a single clause — is a well-documented feature of African American Vernacular English. This tool automatically detects sentences containing multiple negators, scanning both forward and backward within each clause to identify co-occurring negative words like no, nothing, never, and n't.</p>
+          <button class="card-explore">Explore</button>
+        </div>
+      </article>
+
+      <article class="card card-link-wrap" onclick="showPage('habitual')" tabindex="0" onkeydown="if(event.key==='Enter')showPage('habitual')">
+        <div class="card-image">
+          <div class="img-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="ph-label">images/image_2.png</span>
+          </div>
+          <img src="images/image_2.png" alt="Image 2" onerror="handleImgError(this)" onload="handleImgLoad(this)"/>
+          <div class="img-overlay"></div>
+          <div class="img-number">02</div>
+        </div>
+        <div class="card-text">
+          <span class="card-tag">Feature · Aspect</span>
+          <h2>Habitual <em>Be</em></h2>
+          <hr class="card-divider"/>
+          <p>Habitual be is a distinctive aspectual marker in African American English, expressing actions or states that occur regularly over time. This tool uses a rule-based system — examining the part-of-speech context around each instance of be — combined with an n-gram language model and a trained machine learning classifier to automatically identify habitual be in naturalistic speech data.</p>
+          <button class="card-explore">Explore</button>
+        </div>
+      </article>
+
+      <article class="card card-link-wrap" onclick="showPage('about')" tabindex="0" onkeydown="if(event.key==='Enter')showPage('about')">
+        <div class="card-image">
+          <div class="img-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="ph-label">images/image_3.png</span>
+          </div>
+          <img src="images/image_3.png" alt="Image 3" onerror="handleImgError(this)" onload="handleImgLoad(this)"/>
+          <div class="img-overlay"></div>
+          <div class="img-number">03</div>
+        </div>
+        <div class="card-text">
+          <span class="card-tag">Background · Context</span>
+          <h2>About the <em>Project</em></h2>
+          <hr class="card-divider"/>
+          <p>This project documents and analyzes features of African American English using computational tools applied to naturalistic speech corpora. Explore the methodology, data sources, and the story behind the work.</p>
+          <button class="card-explore">Explore</button>
+        </div>
+      </article>
+
+    </main>
+    <footer>
+      <strong>Documenting <em>ALFAH</em></strong>
+      Katherine Blanco - Spring 2026
+    </footer>
+  </div><!-- /page-home -->
+
+
+  <!-- ══════════════════════════════════════
+       PAGE: MULTIPLE NEGATION
+  ══════════════════════════════════════ -->
+  <div class="page" id="page-negation">
+    <div class="page-header">
+      <p class="eyebrow">Feature · Syntax</p>
+      <h1>Multiple <em>Negation</em></h1>
+      <p>Multiple Negation is when sentences contain instances of "Double Negation", like <em>"I ain't ever..."</em>.</p>
+    </div>
+
+    <main class="showcase">
+
+      <article class="card">
+        <div class="card-image">
+          <div class="img-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="ph-label">images/image_4.png</span>
+          </div>
+          <img src="images/image_4.png" alt="Image 4" onerror="handleImgError(this)" onload="handleImgLoad(this)"/>
+          <div class="img-overlay"></div>
+          <div class="img-number">01</div>
+        </div>
+        <div class="card-text">
+           
+          <h2>Step 1: <em>Collect the Data</em></h2>
+          <hr class="card-divider"/>
+          <p>The data collected is from the Samuel Proctor Oral History Program at the University of Florida, and is uploaded as CSV (comma separated value) files. Collecting the files is the first step in each of these tagging processes. These files contain eight columns (along with a speaker column and a text column) for each of the eight features we'll be looking for. In this case, it'll be the <em>"Multiple negators"</em> column.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-image">
+          <div class="img-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="ph-label">images/image_5.png</span>
+          </div>
+          <img src="images/image_5.png" alt="Image 5" onerror="handleImgError(this)" onload="handleImgLoad(this)"/>
+          <div class="img-overlay"></div>
+          <div class="img-number">02</div>
+        </div>
+        <div class="card-text">
+           
+          <h2>Step 2: <em>Make Sure Data is Clean</em></h2>
+          <hr class="card-divider"/>
+          <p>Since the data is manually annotated by students, we must make sure that the CSV files are free of any errors before being put through the tagger. In the steps leading up to the tagger, several files will be removed due to formatting errors, encoding errors, or sometimes unknown errors. These files are added to a list to be manually cleaned at a later date.</p>
+          <p>Additionally, at this point in the project, we only wanted to use files that were not annotated for "Multiple Negation" yet. I wrote an additional script to make sure the "Multiple negators" column only had zeros (as seen in the picture) or nothing at all. If the file passed the script, it could move on to the next step.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-image">
+          <div class="img-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="ph-label">images/image_4.png</span>
+          </div>
+          <img src="images/convertCSV.png" alt="Image 4" onerror="handleImgError(this)" onload="handleImgLoad(this)"/>
+          <div class="img-overlay"></div>
+          <div class="img-number">03</div>
+        </div>
+        <div class="card-text">
+           
+          <h2>Step 3: <em>Convert from CSV</em></h2>
+          <hr class="card-divider"/>
+          <p>Once the files have been cleaned, they go through a script that I wrote to convert them into TSV (tab separated value) files. This makes it easier for our tagger to process the data and look through columns. The advisor also just wanted it as TSV files instead of CSV.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-image">
+          <div class="img-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="ph-label">images/image_5.png</span>
+          </div>
+          <img src="images/image_6.png" alt="Image 5" onerror="handleImgError(this)" onload="handleImgLoad(this)"/>
+          <div class="img-overlay"></div>
+          <div class="img-number">04</div>
+        </div>
+        <div class="card-text">
+           
+          <h2>Step 4: <em>Run Tagger</em></h2>
+          <hr class="card-divider"/>
+          <p>Now the "Multiple Negation" tagger can run. This tagger was not written by me, and is very simple. If a sentence contains two instances of a negative word such as "no", "never", "ain't", "don't", etc, then a "1" will be marked in the "Multiple Negators" column. If not, then a "0" will be marked instead.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-image">
+          <div class="img-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="ph-label">images/image_4.png</span>
+          </div>
+          <img src="images/MN_result.png" alt="Image 4" onerror="handleImgError(this)" onload="handleImgLoad(this)"/>
+          <div class="img-overlay"></div>
+          <div class="img-number">05</div>
+        </div>
+        <div class="card-text">
+           
+          <h2>Step 5: <em>Results</em></h2>
+          <hr class="card-divider"/>
+          <p>The resulting output is a TSV file that has been annotated by a tagger on whether "Multiple Negation" is present. The tagger can often produce false positives, which can be analyzed and used for future performance improvements.</p>
+        </div>
+      </article>
+
+    </main>
+    <footer>
+      <strong>Documenting <em>ALFAH</em></strong>
+      Katherine Blanco - Spring 2026
+    </footer>
+  </div><!-- /page-negation -->
+
+
+  <!-- ══════════════════════════════════════
+       PAGE: HABITUAL BE
+  ══════════════════════════════════════ -->
+  <div class="page" id="page-habitual">
+    <div class="page-header">
+      <p class="eyebrow">Feature · Aspect</p>
+      <h1>Habitual <em>Be</em></h1>
+      <p>Habitual Be is when sentences contain instances of <em>"be"</em> being used in settings to mean an action is being done habitually, like <em>"I be going to the gym"</em>.</p>
+    </div>
+
+    <main class="showcase">
+
+      <article class="card">
+        <div class="card-image">
+          <div class="img-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="ph-label">images/image_6.png</span>
+          </div>
+          <img src="images/image_4.png" alt="Image 6" onerror="handleImgError(this)" onload="handleImgLoad(this)"/>
+          <div class="img-overlay"></div>
+          <div class="img-number">01</div>
+        </div>
+        <div class="card-text">
+           
+          <h2>Step 1: <em>Collect the Data</em></h2>
+          <hr class="card-divider"/>
+          <p>The data collected is from the Samuel Proctor Oral History Program at the University of Florida, and is uploaded as CSV (comma separated value) files. Collecting the files is the first step in each of these tagging processes. These files contain eight columns (along with a speaker column and a text column) for each of the eight features we'll be looking for. In this case, it'll be the <em>"Habitual be"</em> column.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-image">
+          <div class="img-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="ph-label">images/image_5.png</span>
+          </div>
+          <img src="images/image_5.png" alt="Image 5" onerror="handleImgError(this)" onload="handleImgLoad(this)"/>
+          <div class="img-overlay"></div>
+          <div class="img-number">02</div>
+        </div>
+        <div class="card-text">
+           
+          <h2>Step 2: <em>Make Sure Data is Clean</em></h2>
+          <hr class="card-divider"/>
+          <p>Since the data is manually annotated by students, we must make sure that the CSV files are free of any errors before being put through the tagger. In the steps leading up to the tagger, several files will be removed due to formatting errors, encoding errors, or sometimes unknown errors. These files are added to a list to be manually cleaned at a later date.</p>
+          <p>Additionally, at this point in the project, we only wanted to use files that were not annotated <em>at all</em>. To make sure the files had never been annotated, I looked for some of the oldest files we had in the "Interviews" folder. Several files were from 2022, so I used those.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-image">
+          <div class="img-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="ph-label">images/image_4.png</span>
+          </div>
+          <img src="images/convertCSV.png" alt="Image 4" onerror="handleImgError(this)" onload="handleImgLoad(this)"/>
+          <div class="img-overlay"></div>
+          <div class="img-number">03</div>
+        </div>
+        <div class="card-text">
+           
+          <h2>Step 3: <em>Convert from CSV</em></h2>
+          <hr class="card-divider"/>
+          <p>Once the files have been cleaned, they go through a script that I wrote to convert them into TSV (tab separated value) files. The change is meant to be more efficient, but the advisor also just wanted them as TSV files instead of CSV. This caused issues for the "Habitual Be" tagger, as it was made with a different formatting that required commas in the files to work. However, with some quick bug fixing, the tagger was ready to use.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-image">
+          <div class="img-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="ph-label">images/image_5.png</span>
+          </div>
+          <img src="images/habituality.png" alt="Image 5" onerror="handleImgError(this)" onload="handleImgLoad(this)"/>
+          <div class="img-overlay"></div>
+          <div class="img-number">04</div>
+        </div>
+        <div class="card-text">
+           
+          <h2>Step 4: <em>Run Habitual Be Tagger</em></h2>
+          <hr class="card-divider"/>
+          <p>Now the "Habitual Be" tagger can run. This tagger works by locating "be" in a sentence, and uses n-gram similarity to see if the be is habitual or not. For a "be" to be habitual, it needs to be surrounded by certain words in the sentence like "I" or other words that the model detects as probable.</p>
+          <p>This tagger uses a pre-trained model, which was trained in a different script. I was not able to get that script to work in time for this project, and is something I am actively working with the advisor on. I was advised to use the pre-trained model to gain inference on these new files, rather than retraining the model.</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-image">
+          <div class="img-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="ph-label">images/image_4.png</span>
+          </div>
+          <img src="images/analysis.png" alt="Image 4" onerror="handleImgError(this)" onload="handleImgLoad(this)"/>
+          <div class="img-overlay"></div>
+          <div class="img-number">4.5</div>
+        </div>
+        <div class="card-text">
+           
+          <h2>Step 4.5: <em>Read Analysis File</em></h2>
+          <hr class="card-divider"/>
+          <p>A file called "rules coraal_analysis_spreadsheet.csv" is created during the TSV reading process. This file contains the rule outputs that the pretrained model will use to produce the results. While this file is unnecessary for the user, it is useful to see what rules were being produced before being fed to the model. </p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-image">
+          <div class="img-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="ph-label">images/image_5.png</span>
+          </div>
+          <img src="images/HB_results.png" alt="Image 5" onerror="handleImgError(this)" onload="handleImgLoad(this)"/>
+          <div class="img-overlay"></div>
+          <div class="img-number">05</div>
+        </div>
+        <div class="card-text">
+           
+          <h2>Step 5: <em>Results</em></h2>
+          <hr class="card-divider"/>
+          <p>I was able to get a sample version of the "Habitual Be" model to work for this project, but was unable to get substantial results. Oftentimes the model will just put a "1" anytime "be" is in the sentence, which surprisingly isn't very often. I hope to get the "Habitual Be" tagger running and producing proper, subatantial outputs before the end of May.</p>
+        </div>
+      </article>
+
+    </main>
+    <footer>
+      <strong>Documenting <em>ALFAH</em></strong>
+      Katherine Blanco - Spring 2026
+    </footer>
+  </div><!-- /page-habitual -->
+
+
+  <!-- ══════════════════════════════════════
+       PAGE: ABOUT THE PROJECT
+  ══════════════════════════════════════ -->
+  <div class="page" id="page-about">
+    <div class="page-header">
+      <p class="eyebrow">Background · Context</p>
+      <h1>About the <em>Project</em></h1>
+      <p><em>African-American English</em> is often called "improper English" or "ungrammatical". However, we have learned that AAE has features with specific grammar rules that won't work if used incorrectly. This project aims to document African-American stories, and the AAE features within them.</p>
+    </div>
+
+    <div class="about-body">
+      <h2>The <em>Story</em></h2>
+      <p>ALFAH, or "Annotating Linguistic Features in African American Oral Histories", is a project dedicated to preserving and studying the oral histories of African American communities. The data comes from the Samuel Proctor Oral History Program at the University of Florida, which houses a rich collection of first-person narratives told in the speakers' own voices.</p>
+      <p>My contribution focuses on the computer science side of this research. The code automatically identifies grammatical features characteristic of African American Vernacular English, which is a rule-governed dialect with its own systematic grammar, not a deviation from "standard" English. Two features are examined in particular: habitual be, which marks recurring actions ("she be working late"), and multiple negation, the use of more than one negative marker in a single clause ("I ain't never seen nothing like that"). By showcasing the features of the dialect and how its used grammatically in sentences, I hope to show that African American English is not "improper English" and will be documented appropriately for years to come.</p>
+
+      <hr class="about-divider"/>
+
+      <h2><em>Contact</em></h2>
+      <p>Katherine Blanco, ka.blanco@ufl.edu, Undergraduate - Linguistics - University of Florida</p>
+      <p>Jessica Heady, headyj@ufl.edu, Graduate Researcher - Linguistics - University of Florida</p>
+      <p>Dr. Sarah Moeller, smoeller@ufl.edu, Research Advisor - Linguistics - University of Florida</p>
+    </div>
+
+    <footer>
+      <strong>Documenting <em>ALFAH</em></strong>
+      Katherine Blanco - Spring 2026
+    </footer>
+  </div><!-- /page-about -->
+
+
+  <!-- ══════════════════════════════════════
+       PAGE: MAKING THIS WEBSITE
+  ══════════════════════════════════════ -->
+  <div class="page" id="page-making">
+    <div class="page-header">
+      <p class="eyebrow">Process · Tools</p>
+      <h1>Making this <em>Website</em></h1>
+      <p>This website was built using Claude AI, on Sonnet 4.6.</p>
+    </div>
+
+    <div class="about-body">
+      <h2>The <em>Tool</em></h2>
+      <p>To built this website, I decided to use Claude AI. Out of all the LLM options in the world right now, I felt that Claude was the least terrible (morally) and 
+        the best in terms of coding. I let it use whatever framework it wanted, but since most websites are built using HTML and CSS, I had a feeling it would use those anyways.</p>
+
+      <hr class="about-divider"/>
+
+      <h2>Design <em>Decisions</em></h2>
+      <p>As for the design, I allowed Claude to give me whatever design it wanted as long as it followed my instructions. The prompt was as follows:</p>
+      <p>"<em>Please make me a website to showcase some images and text. If you want to make it fancy, make it fancy. 
+        Please use a color palette using d8e2dc, ffe5d9, ffcad4, f4acb7, 9d8189. Id like for each div for the image and text to be on opposite sides, then flip for each div as it goes down the page.</em>"</p>
+      <p>The initial website looked good, but I continued asking for more features to make it look even better and easier for me to work on. Some examples are adding easy image named, and adding the NavBar at the top, which I prompted it to make with this:</p>
+      <p>"<em>Please make it super easy for me to take pictures from a folder called "images" in the same website folder, and use easy names like "image_1.png" as placeholders. Please also make a navbar with four tabs. One tab is "Home", then "Multiple Negation", then "Habitual Be", then "About the Project".</em>"</p>
+      <p>Then when it made it an ugly "hamburger" menu, I told it this:</p>
+      <p>"<em>Can you make the navbar not be behind a hamburger menu. I want it to be visible at all times as you scroll down.</em>"</p>
+      <p>And continued for quite some time, with more small changes, until the website is what it is now.</p>
+      <hr class="about-divider"/>
+
+      <h2>What I <em>Learned</em></h2>
+      <p>When I started using Claude for more nuanced tasks, like making the images zoom in or out in a certain way, it became difficult for it to understand what I wanted. In the interest of time and tokens, I decided to leave some images a bit uglier than others since I couldn't get Claude to do the images how I wanted it to. Whole Claude AI si good at various web design aspects, it had a lot of trouble with the more nuanced parts, which may explain why vibe-coded websites are so easy to spot.</p>
+      </div>
+      <footer>
+      <strong>Documenting <em>ALFAH</em></strong>
+      Katherine Blanco - Spring 2026
+    </footer>
+  </div><!-- /page-making -->
+
+
+  <script>
+    /* ── Tab navigation ── */
+    function showPage(name) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      const btn = document.querySelector(`.nav-links button[data-page="${name}"]`);
+      if (btn) btn.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(observeCards, 100);
+    }
+
+    /* ── Mobile menu (no-op, kept for safety) ── */
+    function toggleMenu() {}
+
+    /* ── Image handling ── */
+    // Called when an image fails to load — shows placeholder
+    function handleImgError(img) {
+      img.classList.add('img-missing');
+      // placeholder is already visible by default, nothing extra needed
+    }
+    // Called when an image loads successfully — hides placeholder
+    function handleImgLoad(img) {
+      const ph = img.closest('.card-image').querySelector('.img-placeholder');
+      if (ph) ph.classList.add('hidden');
+    }
+
+    // On page load, check images that may have cached-loaded already
+    document.querySelectorAll('.card-image img').forEach(img => {
+      if (img.complete) {
+        if (img.naturalWidth > 0) handleImgLoad(img);
+        else handleImgError(img);
+      }
+    });
+
+    /* ── Scroll-reveal ── */
+    let observer;
+    function observeCards() {
+      if (observer) observer.disconnect();
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.page.active .card').forEach(c => {
+        c.classList.remove('visible');
+        observer.observe(c);
+      });
+    }
+    observeCards();
+  </script>
+</body>
+</html>
